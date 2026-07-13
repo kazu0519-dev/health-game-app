@@ -11,11 +11,8 @@ body {
     color: #f1f5f9;
     display: flex;
     flex-direction: column;
-    /* 画面全体の高さをブラウザの表示領域ぴったりに合わせる */
     height: 100vh;
-    height: -webkit-fill-available;
-    /* body自体の余計なスクロールは防ぐ */
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 header {
@@ -26,7 +23,7 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    flex-shrink: 0; /* ヘッダーが潰れないように固定 */
+    flex-shrink: 0;
 }
 
 .header-title {
@@ -46,18 +43,16 @@ header {
     color: #f59e0b;
 }
 
-/* 🌟 メインのコンテンツ領域：ここだけを確実にスクロールさせます */
-.container {
+/* 🌟 main自体をスクロールコンテナにして確実に指で動かせるように修正 */
+main.container {
     flex: 1;
     width: 100%;
     max-width: 480px;
     margin: 0 auto;
     padding: 16px;
-    /* 下部メニューに隠れないように下の余白を多めに確保 */
-    padding-bottom: 110px; 
-    /* 縦方向のスクロールを有効にし、スマホ特有の滑らかな慣性スクロールを強制 */
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch; 
+    padding-bottom: 120px; /* メニューの上の余白をさらに拡大 */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .card {
@@ -125,12 +120,11 @@ header {
 .view-section { display: none; }
 .view-section.active { display: block; }
 
-/* 下部ナビゲーション（位置はキープ） */
 .bottom-nav {
     position: fixed;
-    bottom: 10px; 
-    left: 10px;   
-    right: 10px;
+    bottom: 15px; 
+    left: 15px;   
+    right: 15px;
     height: 65px;
     background-color: #111827;
     border: 1px solid #1f2937;
@@ -139,7 +133,6 @@ header {
     justify-content: space-around;
     align-items: center;
     z-index: 9999;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
 }
 
 .nav-item {
