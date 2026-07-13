@@ -1,8 +1,9 @@
 // グローバル状態管理
+// app.js (初期値を50PTにして即テスト可能に)
 let appState = {
   user: {
-    points: 0,
-    totalPoints: 0,
+    points: 50, // 👈 最初から50PT持っている状態にします！
+    totalPoints: 50, // 👈 ここも50に
     stepsToday: 0,
     todayPointsEarned: 0,
     distanceTraveled: 0.0,
@@ -18,6 +19,10 @@ function loadAppState() {
     } catch (e) {
       console.error("データ復元エラー");
     }
+  } else {
+    // 💡 初めて起動したときだけ50PTを確実に持たせる
+    appState.user.points = 50;
+    appState.user.totalPoints = 50;
   }
   updateGlobalUI();
 }

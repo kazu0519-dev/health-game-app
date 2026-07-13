@@ -1,4 +1,4 @@
-/* モックデザイン完全再現：iOS/Androidネイティブアプリ風スタイル */
+/* style.css の全体上書き用（下部ナビを最前面＆安全圏に固定） */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -6,19 +6,18 @@
 
 body {
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #0b0f19; /* 高級感のあるダーククリーンテイスト */
+  background-color: #0b0f19;
   color: #f1f5f9;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden; /* 外側のびよんびよんスクロールを完全防止 */
+  height: -webkit-fill-available; /* iOS向けの高さ修正 */
+  overflow: hidden;
 }
 
-/* ヘッダー */
 header {
   background-color: #111827;
   border-bottom: 1px solid #1f2937;
@@ -26,14 +25,12 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
   z-index: 100;
 }
 
 .header-title {
   font-size: 1.1rem;
   font-weight: 800;
-  letter-spacing: -0.5px;
   background: linear-gradient(to right, #a5b4fc, #6366f1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -44,50 +41,28 @@ header {
   border: 1px solid rgba(99, 102, 241, 0.3);
   padding: 6px 14px;
   border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
   font-weight: 700;
   color: #f59e0b;
 }
 
-/* メインコンテナ（スクロール領域） */
 .container {
   flex: 1;
   overflow-y: auto;
   padding: 20px 16px;
+  padding-bottom: 90px; /* 下部メニューに被らないように余白を追加 */
   width: 100%;
-  max-width: 480px; /* スマホ幅固定化 */
+  max-width: 480px;
   margin: 0 auto;
 }
 
-/* カード共通 */
 .card {
   background: #111827;
   border: 1px solid #1f2937;
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 16px;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-h2,
-h3 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.section-desc {
-  color: #94a3b8;
-  font-size: 0.85rem;
-  margin-bottom: 16px;
-}
-
-/* ホーム専用コンポーネント */
 .total-points-card {
   background: linear-gradient(135deg, #1e1b4b 0%, #111827 100%);
   border: 1px solid #312e81;
@@ -98,18 +73,13 @@ h3 {
   color: #94a3b8;
   margin: 0;
   font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
-
 .big-points {
   font-size: 2.5rem;
   font-weight: 900;
   color: #f59e0b;
   margin-top: 5px;
 }
-
-/* グラフ表示 */
 .chart-container {
   margin-top: 10px;
 }
@@ -122,16 +92,12 @@ h3 {
   justify-content: space-between;
   color: #64748b;
   font-size: 0.75rem;
-  padding: 0 5px;
 }
-
-/* アクティビティグリッド */
 .activity-grid {
   display: flex;
   gap: 12px;
   margin-bottom: 16px;
 }
-
 .activity-box {
   flex: 1;
   display: flex;
@@ -139,7 +105,6 @@ h3 {
   align-items: center;
   padding: 16px;
 }
-
 .progress-ring-wrapper {
   width: 75px;
   height: 75px;
@@ -150,29 +115,23 @@ h3 {
   justify-content: center;
   margin-bottom: 10px;
 }
-
 .points-ring {
   border-color: #f59e0b;
 }
-
 .progress-number {
   font-size: 1.1rem;
   font-weight: 800;
 }
-
 .activity-label {
   font-size: 0.8rem;
   color: #94a3b8;
   text-align: center;
   margin: 0;
 }
-
 .goal-text {
   font-size: 0.7rem;
   color: #475569;
 }
-
-/* 地図とボタン */
 #map {
   width: 100%;
   height: 200px;
@@ -180,7 +139,6 @@ h3 {
   border: 1px solid #1f2937;
   margin-bottom: 12px;
 }
-
 #sensor-start-btn,
 .action-btn,
 .play-btn {
@@ -192,18 +150,13 @@ h3 {
   width: 100%;
   font-size: 0.95rem;
   font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
 }
-
 #sensor-start-btn {
   background: #10b981;
 }
 .action-btn {
   background: linear-gradient(to right, #6366f1, #4f46e5);
 }
-
-/* フォーム要素 */
 .form-section {
   border-top: 1px solid #1f2937;
   padding-top: 14px;
@@ -214,7 +167,6 @@ h3 {
   font-weight: 700;
   color: #818cf8;
   margin-bottom: 8px;
-  text-transform: uppercase;
 }
 .input-row {
   display: flex;
@@ -236,12 +188,8 @@ h3 {
   border: 1px solid #374151;
   border-radius: 8px;
   color: white;
-  font-size: 1rem;
 }
-
-/* リスト表示 */
 .log-list {
-  list-style: none;
   padding: 0;
   margin: 0;
 }
@@ -252,8 +200,6 @@ h3 {
   border-bottom: 1px solid #1f2937;
   font-size: 0.9rem;
 }
-
-/* ゲームカードデザイン */
 .game-slider {
   display: flex;
   flex-direction: column;
@@ -273,7 +219,7 @@ h3 {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: rgba(16, 185, 129, 0.2);
+  background: rgba(10, 185, 129, 0.2);
   color: #10b981;
   padding: 4px 8px;
   border-radius: 8px;
@@ -303,10 +249,7 @@ h3 {
 }
 .play-btn:disabled {
   background: #475569;
-  cursor: not-allowed;
 }
-
-/* ミニゲームキャンバス領域 */
 #mazeCanvas {
   display: block;
   margin: 0 auto;
@@ -326,7 +269,6 @@ h3 {
   border: none;
   padding: 4px 10px;
   border-radius: 6px;
-  cursor: pointer;
 }
 .game-instruction {
   text-align: center;
@@ -334,8 +276,6 @@ h3 {
   color: #94a3b8;
   margin-top: 8px;
 }
-
-/* ランキング表示 */
 .ranking-tabs {
   display: flex;
   gap: 8px;
@@ -348,13 +288,11 @@ h3 {
   border: 1px solid #374151;
   border-radius: 8px;
   color: #94a3b8;
-  cursor: pointer;
   font-weight: 700;
 }
 .rank-tab.active {
   background: #6366f1;
   color: white;
-  border-color: #6366f1;
 }
 .rank-row {
   display: flex;
@@ -392,24 +330,33 @@ h3 {
   background: #b45309;
   color: white;
 }
-.rank-name {
-  font-weight: 600;
-}
 .rank-val {
   font-weight: 700;
   color: #10b981;
 }
+.view-section {
+  display: none;
+}
+.view-section.active {
+  display: block;
+}
 
-/* 固定下部ナビゲーション */
+/* 🌟 ここをスマホ専用に超強化固定 */
 .bottom-nav {
-  height: 68px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 75px;
   background-color: #111827;
   border-top: 1px solid #1f2937;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  position: relative;
-  z-index: 100;
+  padding-bottom: env(
+    safe-area-inset-bottom
+  ); /* スマホの下部バーの隙間を自動計算 */
+  z-index: 9999; /* 何が何でも一番上に表示 */
 }
 .nav-item {
   display: flex;
@@ -417,27 +364,14 @@ h3 {
   align-items: center;
   justify-content: center;
   color: #64748b;
-  cursor: pointer;
   width: 25%;
   height: 100%;
 }
-.nav-icon {
-  font-size: 1.4rem;
-  margin-bottom: 2px;
-}
 .nav-label {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  tracking: 0.5px;
+  margin-top: 2px;
 }
 .nav-item.active {
   color: #6366f1;
-}
-
-/* ビュー非表示制御 */
-.view-section {
-  display: none;
-}
-.view-section.active {
-  display: block;
 }
