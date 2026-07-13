@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Health & Game Connect</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="header-title">ヘルス＆ゲーム コネクト</div>
+      <div class="header-points">
+        <span>🪙</span><span id="global-points">0</span>
+        <span class="pt-unit">PT</span>
+      </div>
+    </header>
+
+    <main class="container">
+      <section id="view-home" class="view-section active">
+        <div class="card total-points-card">
+          <p class="card-subtitle">累計獲得ポイント</p>
+          <div class="big-points">🪙 <span id="home-total-points">0</span></div>
+        </div>
+        <div class="card graph-card">
+          <h3>週間ポイント推移</h3>
+          <div class="chart-container">
+            <svg viewBox="0 0 300 120" class="sparkline">
+              <path
+                d="M 10 100 Q 50 70 90 90 T 170 40 T 250 50 T 290 20"
+                fill="none"
+                stroke="#10b981"
+                stroke-width="3"
+              ></path>
+              <circle cx="290" cy="20" r="5" fill="#10b981"></circle>
+            </svg>
+            <div class="chart-labels">
+              <span>月</span><span>火</span><span>水</span><span>木</span
+              ><span>金</span><span>土</span><span>日</span>
+            </div>
+          </div>
+        </div>
+        <h3>今日のアクティビティ</h3>
+        <div class="activity-grid">
+          <div class="card activity-box">
+            <div class="progress-ring-wrapper">
+              <div class="progress-number" id="step-display">0</div>
+            </div>
+            <p class="activity-label">
+              今日の歩数<br /><span class="goal-text">/ 10,000 歩</span>
+            </p>
+          </div>
+          <div class="card activity-box">
+            <div class="progress-ring-wrapper points-ring">
+              <div class="progress-number" id="today-earned-points">0</div>
+            </div>
+            <p class="activity-label">
+              獲得ポイント<br /><span class="goal-text">今日</span>
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <div id="map"></div>
+          <button id="sensor-start-btn" onclick="startTracking()">
+            🚶 トラッキングを開始
+          </button>
+        </div>
+      </section>
+
+      <section id="view-health" class="view-section">
+        <div class="card">
+          <h2>📝 体調・ログ記録</h2>
+          <p class="section-desc">
+            必要な項目だけ入力して記録ボタンを押してください。
+          </p>
+
+          <div class="form-section">
+            <div class="form-title">🧍 身体の記録</div>
+            <div class="input-row">
+              <div class="input-group">
+                <label>体重 (kg)</label
+                ><input
+                  type="number"
+                  id="health-weight"
+                  step="0.1"
+                  placeholder="72.5"
+                />
+              </div>
+              <div class="input-group">
+                <label>体脂肪率 (%)</label
+                ><input
+                  type="number"
+                  id="health-fat"
+                  step="0.1"
+                  placeholder="18.2"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-section">
+            <div class="form-title">🍳 栄養・水分の記録</div>
+            <div class="input-row">
+              <div class="input-group">
+                <label>摂取カロリー (kcal)</label
+                ><input
+                  type="number"
+                  id="health-calories"
+                  step="50"
+                  placeholder="1850"
+                />
+              </div>
+              <div class="input-group">
+                <label>水分補給 (L)</label
+                ><input
+                  type="number"
+                  id="health-water"
+                  step="0.1"
+                  placeholder="1.5"
+                />
+              </div>
+            </div>
+            <div class="input-group" style="margin-top: 10px">
+              <label>食べたもの</label
+              ><input
+                type="text"
+                id="health-meal"
+                placeholder="例：チキンサラダ、玄米ご飯"
+              />
+            </div>
+          </div>
+          <button class="action-btn" onclick="submitHealthRecord()">
+            この内容で記録する
+          </button>
+        </div>
+        <div class="card">
+          <h3>📋 本日の履歴</h3>
+          <ul id="health-log-list" class="log-list"></ul>
+        </div>
+      </section>
+
+      <section id="view-games" class="view-section">
+        <div class="card" id="game-selection-area">
+          <h2>🎮 ゲームセンター</h2>
+          <p class="section-desc">
+            貯まったポイントを消費してミニゲームに挑戦！
+          </p>
+          <div class="game-slider">
+            <div class="game-card">
+              <div class="game-badge">傾きアクション</div>
+              <div class="game-icon-visual">🌀</div>
+              <h3>迷路チャレンジ</h3>
+              <p class="game-meta">消費: <span class="cost-tag">20 PT</span></p>
+              <p class="game-desc">
+                スマホを前後左右に傾けて、壁を避けながらボールをゴールへ導け！
+              </p>
+              <button
+                class="play-btn"
+                id="maze-start-btn"
+                onclick="launchMazeGame()"
+              >
+                アンロックしてプレイ
+              </button>
+            </div>
+            <div class="game-card locked">
+              <div class="game-badge secure">反射神経</div>
+              <div class="game-icon-visual">🛡️</div>
+              <h3>リフレックス・ドジャー</h3>
+              <p class="game-meta">消費: 30 PT</p>
+              <p class="game-desc">
+                画面上部から迫り来る障害物をタップ＆スワイプで極限まで避け続けろ！
+              </p>
+              <button class="play-btn" disabled>Coming Soon</button>
+            </div>
+            <div class="game-card locked">
+              <div class="game-badge secure">ジャンプ</div>
+              <div class="game-icon-visual">🚀</div>
+              <h3>グラビティ・ジャンプ</h3>
+              <p class="game-meta">消費: 40 PT</p>
+              <p class="game-desc">
+                スマホのバウンドやタップでキャラクターを高く跳び上がらせろ！
+              </p>
+              <button class="play-btn" disabled>Coming Soon</button>
+            </div>
+          </div>
+        </div>
+        <div id="maze-game-container" class="card" style="display: none">
+          <div class="game-header-bar">
+            <span id="maze-timer">時間: 0.0秒</span
+            ><button class="close-game-btn" onclick="closeMazeGame()">
+              ✕ 終了
+            </button>
+          </div>
+          <canvas id="mazeCanvas" width="320" height="320"></canvas>
+          <p class="game-instruction">
+            スマホを傾けて青いボールを緑のゴールへ！
+          </p>
+        </div>
+      </section>
+
+      <section id="view-ranking" class="view-section">
+        <div class="card">
+          <h2>🏆 ランキング</h2>
+          <div class="ranking-tabs">
+            <button
+              id="rank-tab-dist"
+              class="rank-tab active"
+              onclick="switchRankingTab('distance')"
+            >
+              移動距離
+            </button>
+            <button
+              id="rank-tab-pts"
+              class="rank-tab"
+              onclick="switchRankingTab('points')"
+            >
+              合計ポイント
+            </button>
+          </div>
+          <div id="ranking-list-container"></div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <div class="nav-item active" id="nav-home" onclick="switchView('home')">
+        🏠<span class="nav-label">ホーム</span>
+      </div>
+      <div class="nav-item" id="nav-health" onclick="switchView('health')">
+        📊<span class="nav-label">体調</span>
+      </div>
+      <div class="nav-item" id="nav-games" onclick="switchView('games')">
+        🎮<span class="nav-label">ゲーム</span>
+      </div>
+      <div class="nav-item" id="nav-ranking" onclick="switchView('ranking')">
+        🏆<span class="nav-label">順位</span>
+      </div>
+    </nav>
+
+    <script src="app.js"></script>
+    <script src="src/health.js"></script>
+    <script src="src/gps.js"></script>
+    <script src="src/ranking.js"></script>
+    <script src="games/game_center.js"></script>
+    <script src="games/maze_game.js"></script>
+    <script src="games/reflex_game.js"></script>
+    <script src="games/jump_game.js"></script>
+  </body>
+</html>
