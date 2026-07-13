@@ -1,20 +1,20 @@
-/* style.css の全体上書き用（下部ナビを最前面＆安全圏に固定） */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  margin: 0;
-  padding: 0;
   background-color: #0b0f19;
   color: #f1f5f9;
   display: flex;
   flex-direction: column;
+  /* 画面の高さをブラウザの表示領域ぴったりに固定 */
   height: 100vh;
-  height: -webkit-fill-available; /* iOS向けの高さ修正 */
+  height: -webkit-fill-available;
   overflow: hidden;
 }
 
@@ -25,7 +25,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 100;
+  height: 60px;
 }
 
 .header-title {
@@ -39,17 +39,19 @@ header {
 .header-points {
   background: rgba(99, 102, 241, 0.15);
   border: 1px solid rgba(99, 102, 241, 0.3);
-  padding: 6px 14px;
+  padding: 4px 12px;
   border-radius: 20px;
   font-weight: 700;
   color: #f59e0b;
 }
 
+/* メインのスクロール領域 */
 .container {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 16px;
-  padding-bottom: 90px; /* 下部メニューに被らないように余白を追加 */
+  padding: 16px;
+  /* 下部ナビゲーションに絶対被らないように、下の余白を100pxに拡大 */
+  padding-bottom: 100px;
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
@@ -190,8 +192,7 @@ header {
   color: white;
 }
 .log-list {
-  padding: 0;
-  margin: 0;
+  list-style: none;
 }
 .log-item {
   display: flex;
@@ -341,23 +342,23 @@ header {
   display: block;
 }
 
-/* 🌟 ここをスマホ専用に超強化固定 */
+/* 🛠️ 下部ナビゲーションの配置を「画面最下部から少し浮かせた位置」に変更 */
 .bottom-nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 75px;
+  bottom: 10px; /* 画面の一番下から10px浮かせる */
+  left: 10px; /* 左右にもマージンを持たせる */
+  right: 10px;
+  height: 65px;
   background-color: #111827;
-  border-top: 1px solid #1f2937;
+  border: 1px solid #1f2937;
+  border-radius: 16px; /* 角丸のフローティングバー形式にして確実に露出させる */
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding-bottom: env(
-    safe-area-inset-bottom
-  ); /* スマホの下部バーの隙間を自動計算 */
-  z-index: 9999; /* 何が何でも一番上に表示 */
+  z-index: 9999;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
 }
+
 .nav-item {
   display: flex;
   flex-direction: column;
@@ -366,12 +367,15 @@ header {
   color: #64748b;
   width: 25%;
   height: 100%;
+  font-size: 1.2rem;
 }
+
 .nav-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  margin-top: 2px;
+  margin-top: 4px;
 }
+
 .nav-item.active {
   color: #6366f1;
 }
